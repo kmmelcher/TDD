@@ -32,4 +32,13 @@ public class Usuario {
     public Collection<Tarefa> getTarefas() {
         return this.gerenciador.getTarefas();
     }
+
+    public void atualizaTarefa(Tarefa tarefa) {
+        this.gerenciador.atualizaTarefa(tarefa);
+    }
+
+
+    public Tarefa getTarefa(int tarefaId) {
+        return this.gerenciador.getTarefa(tarefaId);
+    }
 }
