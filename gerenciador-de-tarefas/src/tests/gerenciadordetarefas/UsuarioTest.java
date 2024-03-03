@@ -120,4 +120,21 @@ public class UsuarioTest {
         assertEquals("Tarefa 1", tarefasOrdenadas.get(2).getTitulo());
     }
 
+    @Test
+    void alterarPrioridadeDeTarefaDoUsuario(){
+        adicionaTarefaAoUsuarioExemplo();
+
+        assertEquals(Prioridade.BAIXA, this.usuarioExemplo.getTarefa(0).getPrioridade());
+
+        this.tarefaExemplo.setPrioridade(Prioridade.MEDIA);
+        this.usuarioExemplo.atualizaTarefa(this.tarefaExemplo);
+
+        assertEquals(Prioridade.MEDIA, this.usuarioExemplo.getTarefa(0).getPrioridade());
+
+        this.tarefaExemplo.setPrioridade(Prioridade.ALTA);
+        this.usuarioExemplo.atualizaTarefa(this.tarefaExemplo);
+
+        assertEquals(Prioridade.ALTA, this.usuarioExemplo.getTarefa(0).getPrioridade());
+    }
+
 }
