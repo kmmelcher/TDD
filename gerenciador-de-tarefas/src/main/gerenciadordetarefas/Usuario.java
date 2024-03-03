@@ -37,8 +37,11 @@ public class Usuario {
         this.gerenciador.atualizaTarefa(tarefa);
     }
 
-
     public Tarefa getTarefa(int tarefaId) {
         return this.gerenciador.getTarefa(tarefaId);
+    }
+
+    public void excluirTarefa(int tarefaId) {
+        this.gerenciador.excluirTarefa(tarefaId);
     }
 }

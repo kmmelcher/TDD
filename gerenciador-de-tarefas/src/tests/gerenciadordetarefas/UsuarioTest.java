@@ -62,4 +62,14 @@ public class UsuarioTest {
         assertEquals("Novo titulo", usuarioExemplo.getTarefa(0).getTitulo());
     }
 
+    @Test
+    void excluiTarefaDoUsuarioTest(){
+        adicionaTarefaAoUsuarioExemplo();
+
+        this.usuarioExemplo.excluirTarefa(0);
+
+        assertEquals(0, this.usuarioExemplo.getTarefas().size());
+        assertNull(this.usuarioExemplo.getTarefa(0));
+    }
+
 }
