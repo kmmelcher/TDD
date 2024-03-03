@@ -18,6 +18,7 @@ public class TarefaTest {
                 Prioridade.BAIXA
         );
 
+        assertEquals(0, tarefa.getId());
         assertEquals("Tarefa 1", tarefa.getTitulo());
         assertEquals("Essa é a tarefa 1", tarefa.getDescricao());
         assertEquals(LocalDate.now(), tarefa.getVencimento());

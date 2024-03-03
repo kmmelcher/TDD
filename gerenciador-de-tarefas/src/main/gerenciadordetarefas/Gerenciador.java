@@ -1,40 +1,40 @@
 package gerenciadordetarefas;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Gerenciador {
 
-    private ArrayList<Tarefa> tarefas;
+    private HashMap<Integer, Tarefa> tarefas;
+
+    private int proximoId;
 
     public Gerenciador(){
-        this.tarefas = new ArrayList<>();
-    }
-
-    public ArrayList<Tarefa> getTarefas() {
-        return this.tarefas;
+        this.tarefas = new HashMap<>();
+        this.proximoId = 0;
     }
 
     public void adicionaTarefa(String titulo, String descricao, LocalDate vencimento, Prioridade prioridade) {
-        Tarefa tarefa = new Tarefa(this.tarefas.size(), titulo, descricao, vencimento, prioridade);
+        Tarefa tarefa = new Tarefa(proximoId, titulo, descricao, vencimento, prioridade);
 
-        this.tarefas.add(tarefa);
+        this.tarefas.put(tarefa.getId(), tarefa);
+        proximoId++;
     }
 
-    public void atualizaTituloTarefa(int id, String titulo) {
-        this.tarefas.get(id).setTitulo(titulo);
+    public Tarefa getTarefa(int id) {
+        return this.tarefas.get(id);
     }
 
-
-    public void atualizaDescricaoTarefa(int id, String descricao) {
-        this.tarefas.get(id).setDescricao(descricao);
+    public void atualizaTarefa(Tarefa tarefa)  {
+        this.tarefas.put(tarefa.getId(), tarefa);
     }
 
-    public void atualizaVencimentoTarefa(int id, LocalDate vencimento) {
-        this.tarefas.get(id).setVencimento(vencimento);
+    public void excluirTarefa(int id) {
+        this.tarefas.remove(id);
     }
 
-    public void atualizaPrioridadeTarefa(int id, Prioridade prioridade) {
-        this.tarefas.get(id).setPrioridade(prioridade);
+    public int size(){
+        return this.tarefas.size();
     }
+
 }
