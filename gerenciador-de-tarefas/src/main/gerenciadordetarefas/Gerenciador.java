@@ -1,7 +1,9 @@
 package gerenciadordetarefas;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Gerenciador {
@@ -42,4 +44,9 @@ public class Gerenciador {
         return this.tarefas.size();
     }
 
+    public ArrayList<Tarefa> getTarefasOrdenadas() {
+        ArrayList<Tarefa> tarefas = new ArrayList<>(this.getTarefas());
+        tarefas.sort(new TarefaComparator());
+        return tarefas;
+    }
 }

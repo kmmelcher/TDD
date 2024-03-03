@@ -1,6 +1,7 @@
 package gerenciadordetarefas;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Usuario {
@@ -43,5 +44,9 @@ public class Usuario {
 
     public void excluirTarefa(int tarefaId) {
         this.gerenciador.excluirTarefa(tarefaId);
+    }
+
+    public ArrayList<Tarefa> exibeTarefas() {
+        return this.gerenciador.getTarefasOrdenadas();
     }
 }

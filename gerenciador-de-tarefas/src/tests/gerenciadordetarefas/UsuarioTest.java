@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +22,24 @@ public class UsuarioTest {
                 this.tarefaExemplo.getDescricao(),
                 this.tarefaExemplo.getVencimento(),
                 this.tarefaExemplo.getPrioridade()
+        );
+    }
+
+    private void adicionaTarefaAoUsuarioExemplo(String titulo, LocalDate vencimento){
+        this.usuarioExemplo.adicionaTarefa(
+                titulo,
+                this.tarefaExemplo.getDescricao(),
+                vencimento,
+                this.tarefaExemplo.getPrioridade()
+        );
+    }
+
+    private void adicionaTarefaAoUsuarioExemplo(String titulo, Prioridade prioridade){
+        this.usuarioExemplo.adicionaTarefa(
+                titulo,
+                this.tarefaExemplo.getDescricao(),
+                this.tarefaExemplo.getVencimento(),
+                prioridade
         );
     }
 
@@ -70,6 +90,34 @@ public class UsuarioTest {
 
         assertEquals(0, this.usuarioExemplo.getTarefas().size());
         assertNull(this.usuarioExemplo.getTarefa(0));
+    }
+
+    @Test
+    void exibirTarefasOrdenadasPorVencimento(){
+        adicionaTarefaAoUsuarioExemplo("Tarefa 1", LocalDate.now().plusDays(2));
+        adicionaTarefaAoUsuarioExemplo("Tarefa 2", LocalDate.now().plusDays(1));
+        adicionaTarefaAoUsuarioExemplo("Tarefa 3", LocalDate.now().plusDays(0));
+
+        assertEquals(3, this.usuarioExemplo.getTarefas().size());
+
+        ArrayList<Tarefa> tarefasOrdenadas = this.usuarioExemplo.exibeTarefas();
+        assertEquals("Tarefa 3", tarefasOrdenadas.get(0).getTitulo());
+        assertEquals("Tarefa 2", tarefasOrdenadas.get(1).getTitulo());
+        assertEquals("Tarefa 1", tarefasOrdenadas.get(2).getTitulo());
+    }
+
+    @Test
+    void exibirTarefasOrdenadasPorPrioridade(){
+        adicionaTarefaAoUsuarioExemplo("Tarefa 1", Prioridade.BAIXA);
+        adicionaTarefaAoUsuarioExemplo("Tarefa 2", Prioridade.MEDIA);
+        adicionaTarefaAoUsuarioExemplo("Tarefa 3", Prioridade.ALTA);
+
+        assertEquals(3, this.usuarioExemplo.getTarefas().size());
+
+        ArrayList<Tarefa> tarefasOrdenadas = this.usuarioExemplo.exibeTarefas();
+        assertEquals("Tarefa 3", tarefasOrdenadas.get(0).getTitulo());
+        assertEquals("Tarefa 2", tarefasOrdenadas.get(1).getTitulo());
+        assertEquals("Tarefa 1", tarefasOrdenadas.get(2).getTitulo());
     }
 
 }
