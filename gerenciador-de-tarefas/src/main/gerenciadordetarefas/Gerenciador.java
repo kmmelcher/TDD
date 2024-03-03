@@ -1,6 +1,7 @@
 package gerenciadordetarefas;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Gerenciador {
@@ -23,6 +24,10 @@ public class Gerenciador {
 
     public Tarefa getTarefa(int id) {
         return this.tarefas.get(id);
+    }
+
+    public Collection<Tarefa> getTarefas(){
+        return this.tarefas.values();
     }
 
     public void atualizaTarefa(Tarefa tarefa)  {
