@@ -35,4 +35,9 @@ public class ControllerTest {
         Assertions.assertTrue(reservaDeVooService.reservaVoo(1, 12));
     }
 
+    @Test
+    public void testAlugarVooInexisteste() {
+        Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 9));
+    }
+
 }
