@@ -10,15 +10,12 @@ import static org.junit.Assert.assertTrue;
 
 public class ControllerTest {
 
-    private List<Voo> voos;
-
     private ReservaDeVooService reservaDeVooService;
 
 
     @BeforeEach
     public void setFlightsUp() {
-        voos = new ArrayList<>();
-        voos.add(
+        reservaDeVooService.adicionaVoo(
                 new Voo(
                         1,
                         "Aeroporto X de Brasília",
@@ -32,7 +29,7 @@ public class ControllerTest {
 
     @Test
     public void testAlugarAssento() {
-        assertTrue(reservaDeVooService.reservarVoo(1, 12));
+        assertTrue(reservaDeVooService.reservaVoo(1, 12));
     }
 
 }
