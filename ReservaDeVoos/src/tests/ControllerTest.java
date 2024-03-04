@@ -1,10 +1,12 @@
 package tests;
 
-import org.junit.Test;
+import main.ReservaDeVooService;
+import main.Voo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,6 +17,7 @@ public class ControllerTest {
 
     @BeforeEach
     public void setFlightsUp() {
+        reservaDeVooService = new ReservaDeVooService();
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         1,
@@ -29,7 +32,7 @@ public class ControllerTest {
 
     @Test
     public void testAlugarAssento() {
-        assertTrue(reservaDeVooService.reservaVoo(1, 12));
+        Assertions.assertTrue(reservaDeVooService.reservaVoo(1, 12));
     }
 
 }
