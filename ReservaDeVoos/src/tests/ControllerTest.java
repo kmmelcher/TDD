@@ -31,13 +31,29 @@ public class ControllerTest {
     }
 
     @Test
-    public void testAlugarAssento() {
+    public void testReservarAssento() {
         Assertions.assertTrue(reservaDeVooService.reservaVoo(1, 12));
     }
 
     @Test
-    public void testAlugarVooInexisteste() {
+    public void testReservarVooInexisteste() {
         Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 9));
+    }
+
+    @Test
+    public void testReservarVooLotado() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "Aeroporto X de João Pessoa",
+                        "Aeroporto Y de Porto Alegre",
+                        "3/09/2026 12h",
+                        new BigDecimal(1600),
+                        1
+                )
+        );
+        reservaDeVooService.reservaVoo(2, 1);
+        Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 1));
     }
 
 }
