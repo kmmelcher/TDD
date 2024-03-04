@@ -41,7 +41,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarVooLotado() {
+    public void testReservarVooAssentoOcupado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
