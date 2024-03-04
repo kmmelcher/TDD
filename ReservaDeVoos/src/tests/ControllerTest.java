@@ -56,4 +56,14 @@ public class ControllerTest {
         Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 1));
     }
 
+    @Test
+    public void testExibeInfosVoo() {
+        Assertions.assertEquals(
+                "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
+                        "Origem: Aeroporto X de Brasília\n" +
+                        "Destino: Aeroporto Y de Salvador\n" +
+                        "Preço R$1200\n" +
+                        "Capacidade: 200 passageiros",
+                reservaDeVooService.exibeVoo(1));
+    }
 }
