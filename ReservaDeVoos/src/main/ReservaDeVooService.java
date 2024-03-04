@@ -17,7 +17,7 @@ public class ReservaDeVooService {
 
     public boolean reservaVoo(int id, int assento) {
         for (Voo vooCadastrado : voos) {
-            if (vooCadastrado.getId() == id) {
+            if (vooCadastrado.getId() == id && !vooCadastrado.getAssentos()[assento-1]) {
                 vooCadastrado.getAssentos()[assento-1] = true;
                 return true;
             }
