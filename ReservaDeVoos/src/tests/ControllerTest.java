@@ -417,9 +417,34 @@ public class ControllerTest {
         incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorData(21, 6, 2020));
     }
+
+    @Test
+    void testPesquisaPorNumPassageiros() {
+        incluiVoos();
+        reservaDeVooService.reservaVoo(3, "Vinícius", 8, "839");
+
+        Assertions.assertEquals(
+                "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
+                        "Origem: Aeroporto X de Brasília\n" +
+                        "Destino: Aeroporto Y de Salvador\n" +
+                        "Preço: R$1200\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
+                        "Capacidade: 200 passageiros\n" +
+                        "(200 assentos disponíveis)\n" +
+                        "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        "== EXIBIÇÃO DE VÔO DE ID 2 ==\n" +
+                        "Origem: Aeroporto A de Belo Horizonte\n" +
+                        "Destino: Aeroporto B de Cuiabá\n" +
+                        "Preço: R$20\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
+                        "Capacidade: 20 passageiros\n" +
+                        "(20 assentos disponíveis)\n",
+                reservaDeVooService.pesquisaPorQtdPassageiros(0)
+        );
+    }
     /*
         TODO:
-            15- Pesquisa por número de passageiros
             16- Pesquisa por número de passageiros (valor negativo)
             17- Pesquisa por número de passageiros (valor zero)
             18- Cancelar Voo (por código de reserva)
