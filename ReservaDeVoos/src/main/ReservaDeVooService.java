@@ -25,4 +25,21 @@ public class ReservaDeVooService {
         return false;
     }
 
+    private Voo buscaVoo(int id) {
+        for (Voo vooCadastrado : voos) {
+            if (vooCadastrado.getId() == id) {
+                return vooCadastrado;
+            }
+        }
+        return null;
+    }
+    public String exibeVoo(int id) {
+        Voo voo = buscaVoo(id);
+
+        return "== EXIBIÇÃO DE VÔO DE ID " + id + " ==\n" +
+                "Origem: " + voo.getOrigem() + "\n" +
+                "Destino: " + voo.getDestino() + "\n" +
+                "Preço R$" + voo.getPreco().toString() + "\n" +
+                "Capacidade: " + voo.getAssentos().length + " passageiros";
+    }
 }
