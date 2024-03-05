@@ -30,6 +30,23 @@ public class ControllerTest {
     }
 
     @Test
+    public void testAdicionaVooDuplicado() {
+        try {
+            reservaDeVooService.adicionaVoo(
+                    new Voo(
+                            1,
+                            "Teste",
+                            "Teste",
+                            "12/12/24 14h",
+                            new BigDecimal(25),
+                            200
+                    )
+            );
+            Assertions.fail("Vôo duplicado inserido");
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
     public void testReservarAssento() {
         reservaDeVooService.reservaVoo(
                 1,
@@ -48,7 +65,7 @@ public class ControllerTest {
                     6,
                     "83994445112"
             );
-            fail("Era esperado um NoSuchElementException");
+            Assertions.fail("Era esperado um NoSuchElementException");
         } catch (NoSuchElementException ignored) {
 
         }
@@ -79,6 +96,7 @@ public class ControllerTest {
                     1,
                     "83998786544"
             );
+            Assertions.fail("Reserva concluída em vôo lotado");
         } catch (IllegalArgumentException ignored) {}
     }
 
