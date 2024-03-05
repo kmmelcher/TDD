@@ -131,4 +131,15 @@ public class ReservaDeVooService {
         }
         return exibeVoos(matches);
     }
+
+    public String pesquisaPorDestino(String destino) {
+        List<Voo> voosDisponiveis = getVoosDisponiveis();
+        List<Voo> matches = new ArrayList<>();
+        for (Voo voo : voosDisponiveis) {
+            if (voo.getDestino().contains(destino)) {
+                matches.add(voo);
+            }
+        }
+        return exibeVoos(matches);
+    }
 }
