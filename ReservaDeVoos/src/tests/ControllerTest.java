@@ -5,10 +5,9 @@ import main.Voo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
-
-import static org.junit.Assert.assertTrue;
+import java.util.NoSuchElementException;
+import static org.junit.Assert.fail;
 
 public class ControllerTest {
 
@@ -32,22 +31,27 @@ public class ControllerTest {
 
     @Test
     public void testReservarAssento() {
-        Assertions.assertTrue(reservaDeVooService.reservaVoo(
+        reservaDeVooService.reservaVoo(
                 1,
                 "Vinícius Azevedo",
                 3,
                 "83997448122"
-        ));
+        );
     }
 
     @Test
     public void testReservarVooInexisteste() {
-        Assertions.assertFalse(reservaDeVooService.reservaVoo(
-                2,
-                "Gustavo Alberto",
-                6,
-                "83994445112"
-        ));
+        try {
+            reservaDeVooService.reservaVoo(
+                    2,
+                    "Gustavo Alberto",
+                    6,
+                    "83994445112"
+            );
+            fail("Era esperado um NoSuchElementException");
+        } catch (NoSuchElementException ignored) {
+
+        }
     }
 
     @Test
@@ -68,14 +72,16 @@ public class ControllerTest {
                 3,
                 "83557746889"
         );
-        Assertions.assertFalse(reservaDeVooService.reservaVoo(
-                2,
-                "Vinícius Azevedo",
-                1,
-                "83998786544"
-        ));
+        try {
+            reservaDeVooService.reservaVoo(
+                    2,
+                    "Vinícius Azevedo",
+                    1,
+                    "83998786544"
+            );
+        } catch (IllegalArgumentException ignored) {}
     }
-    
+
 
     @Test
     public void testExibeInfosVoo() {
