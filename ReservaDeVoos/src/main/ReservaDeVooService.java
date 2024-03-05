@@ -21,8 +21,10 @@ public class ReservaDeVooService {
         int assento = buscaAssentoDisponivel(numeroDePassageiros, voo);
 
         Reserva reserva = new Reserva(nome, numeroDePassageiros, contato, assento);
-        voo.getAssentos()[assento] = reserva;
 
+        for (int i = assento-1; i < assento-1+numeroDePassageiros; i++) {
+            voo.getAssentos()[i] = reserva;
+        }
     }
 
     private int buscaAssentoDisponivel(int numeroDePassageiros, Voo voo) {
@@ -31,7 +33,7 @@ public class ReservaDeVooService {
             if (voo.getAssentos()[i] == null) {
                 contador++;
                 if (contador == numeroDePassageiros) {
-                    return i + 1 - numeroDePassageiros;
+                    return (i + 1) - (numeroDePassageiros - 1);
                 }
             } else {
                 contador = 0;
@@ -55,6 +57,17 @@ public class ReservaDeVooService {
                 "Origem: " + voo.getOrigem() + "\n" +
                 "Destino: " + voo.getDestino() + "\n" +
                 "Preço R$" + voo.getPreco().toString() + "\n" +
-                "Capacidade: " + voo.getAssentos().length + " passageiros";
+                "Capacidade: " + voo.getAssentos().length + " passageiros\n" +
+                "(" + getAssentosDisponiveis(voo) + " assentos disponíveis)";
+    }
+
+    private int getAssentosDisponiveis(Voo voo) {
+        int assentosDisponiveis = 0;
+        for (Reserva reserva : voo.getAssentos()) {
+            if (reserva == null) {
+                assentosDisponiveis++;
+            }
+        }
+        return assentosDisponiveis;
     }
 }
