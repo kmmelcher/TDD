@@ -117,9 +117,38 @@ public class ControllerTest {
                         "Origem: Aeroporto X de Brasília\n" +
                         "Destino: Aeroporto Y de Salvador\n" +
                         "Preço R$1200\n" +
-                        "Capacidade: 200 passageiros" +
+                        "Capacidade: 200 passageiros\n" +
                         "(200 assentos disponíveis)",
                 reservaDeVooService.exibeVoo(1));
+    }
+
+    @Test
+    public void testExibeInfosVooLotado() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "Origem genérica",
+                        "Destino genérico",
+                        "03/03/2024 14h",
+                        new BigDecimal(500),
+                        2
+                )
+        );
+        reservaDeVooService.reservaVoo(
+                2,
+                "Alberto",
+                2,
+                "83"
+        );
+
+        Assertions.assertEquals(
+                "== EXIBIÇÃO DE VÔO DE ID 2 ==\n" +
+                        "Origem: Origem genérica\n" +
+                        "Destino: Destino genérico\n" +
+                        "Preço R$500\n" +
+                        "Capacidade: 2 passageiros\n" +
+                        "(0 assentos disponíveis)",
+                reservaDeVooService.exibeVoo(2));
     }
 
     /*
