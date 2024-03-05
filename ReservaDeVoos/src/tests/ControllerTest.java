@@ -134,9 +134,9 @@ public class ControllerTest {
                 "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
                         "Origem: Aeroporto X de Brasília\n" +
                         "Destino: Aeroporto Y de Salvador\n" +
-                        "Preço R$1200\n" +
+                        "Preço: R$1200\n" +
                         "Capacidade: 200 passageiros\n" +
-                        "(200 assentos disponíveis)",
+                        "(200 assentos disponíveis)\n",
                 reservaDeVooService.exibeVoo(1));
     }
 
@@ -163,9 +163,9 @@ public class ControllerTest {
                 "== EXIBIÇÃO DE VÔO DE ID 2 ==\n" +
                         "Origem: Origem genérica\n" +
                         "Destino: Destino genérico\n" +
-                        "Preço R$500\n" +
+                        "Preço: R$500\n" +
                         "Capacidade: 2 passageiros\n" +
-                        "(0 assentos disponíveis)",
+                        "(0 assentos disponíveis)\n",
                 reservaDeVooService.exibeVoo(2));
     }
 
@@ -203,9 +203,49 @@ public class ControllerTest {
         );
     }
 
+    @Test
+    void getVoosDisponiveis() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "X",
+                        "Y",
+                        "Z",
+                        new BigDecimal(20),
+                        0
+                )
+        );
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        3,
+                        "A",
+                        "B",
+                        "C",
+                        new BigDecimal(9),
+                        1
+                )
+        );
+        Assertions.assertEquals(
+                "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
+                        "Origem: Aeroporto X de Brasília\n" +
+                        "Destino: Aeroporto Y de Salvador\n" +
+                        "Preço: R$1200\n" +
+                        "Capacidade: 200 passageiros\n" +
+                        "(200 assentos disponíveis)\n" +
+                        "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        "== EXIBIÇÃO DE VÔO DE ID 3 ==\n" +
+                        "Origem: A\n" +
+                        "Destino: B\n" +
+                        "Preço: R$9\n" +
+                        "Capacidade: 1 passageiros\n" +
+                        "(1 assentos disponíveis)\n",
+                reservaDeVooService.exibeVoosDisponiveis()
+        );
+    }
+
     /*
         TODO:
-            4- get assentos disponíveis (nenhum disponível)
             5- get Voos disponíveis
             6- get voos disponíveis (com vôos passados E/OU vôos esgotados presentes)
             7- Pesquisa por origem
