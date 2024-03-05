@@ -72,9 +72,9 @@ public class ReservaDeVooService {
         return "== EXIBIÇÃO DE VÔO DE ID " + id + " ==\n" +
                 "Origem: " + voo.getOrigem() + "\n" +
                 "Destino: " + voo.getDestino() + "\n" +
-                "Preço R$" + voo.getPreco().toString() + "\n" +
+                "Preço: R$" + voo.getPreco().toString() + "\n" +
                 "Capacidade: " + voo.getAssentos().length + " passageiros\n" +
-                "(" + getAssentosDisponiveis(voo) + " assentos disponíveis)";
+                "(" + getAssentosDisponiveis(voo) + " assentos disponíveis)\n";
     }
 
     private int getAssentosDisponiveis(Voo voo) {
@@ -89,5 +89,20 @@ public class ReservaDeVooService {
 
     public int getAssentosDisponiveis(int id) {
         return getAssentosDisponiveis(buscaVoo(id));
+    }
+
+    public String exibeVoosDisponiveis() {
+        StringBuilder retorno = new StringBuilder();
+        for (Voo voo : voos) {
+            if (isDisponivel(voo)) {
+                retorno.append("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+                retorno.append(exibeVoo(voo.getId()));
+            }
+        }
+        return retorno.toString();
+    }
+
+    private boolean isDisponivel(Voo voo) {
+        return getAssentosDisponiveis(voo) > 0;
     }
 }
