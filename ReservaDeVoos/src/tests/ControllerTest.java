@@ -403,6 +403,11 @@ public class ControllerTest {
                 reservaDeVooService.pesquisaPorDestino("Cuiabá")
         );
     }
+
+    @Test
+    void testPesquisaPorDestinoInexistente() {
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorDestino("João Pessoa"));
+    }
     /*
         TODO:
             10- Pesquisa por destino
