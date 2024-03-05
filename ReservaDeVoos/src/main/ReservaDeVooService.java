@@ -34,10 +34,27 @@ public class ReservaDeVooService {
         Voo voo = buscaVoo(id);
         int assento = buscaAssentoDisponivel(numeroDePassageiros, voo);
 
-        Reserva reserva = new Reserva(nome, numeroDePassageiros, contato, assento);
+        Reserva reserva = new Reserva(nome, numeroDePassageiros, contato, assento, getCodigoReserva(voo));
 
         for (int i = assento-1; i < assento-1+numeroDePassageiros; i++) {
             voo.getAssentos()[i] = reserva;
+        }
+    }
+
+    private int getCodigoReserva(Voo voo) {
+        int codigo = 1;
+        while (true) {
+            for (int i = 0; i < voo.getAssentos().length; i++) {
+                if (voo.getAssentos()[i] != null) {
+                    if (voo.getAssentos()[i].getCodigo() == codigo) {
+                        codigo++;
+                        break;
+                    }
+                }
+                if (i == voo.getAssentos().length-1) {
+                    return codigo;
+                }
+            }
         }
     }
 
@@ -170,5 +187,15 @@ public class ReservaDeVooService {
 
         }
         return exibeVoos(matches);
+    }
+
+    public void cancelarVoo(int idVoo, int codigoReserva) {
+        Voo voo = buscaVoo(idVoo);
+
+        for (int i = 0; i < voo.getAssentos().length; i++) {
+            if (voo.getAssentos()[i].getCodigo() == codigoReserva) {
+                voo.getAssentos()[i] = null;
+            }
+        }
     }
 }
