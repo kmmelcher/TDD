@@ -169,9 +169,16 @@ public class ControllerTest {
                 reservaDeVooService.exibeVoo(2));
     }
 
+    @Test
+    void testExibeVooInexistente() {
+        try {
+            reservaDeVooService.exibeVoo(5);
+            Assertions.fail("Vôo inexistente exibido");
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     /*
         TODO:
-            1- Adição duplicada de vôo
             2- exibição de vôo inexistente
             3- get assentos disponíveis
             4- get assentos disponíveis (nenhum disponível)
