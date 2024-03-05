@@ -185,10 +185,26 @@ public class ControllerTest {
         );
     }
 
+    @Test
+    void testGetAssentosDisponiveisNenhumDisponivel() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "A",
+                        "B",
+                        "C",
+                        new BigDecimal(9),
+                        0
+                )
+        );
+        Assertions.assertEquals(
+                0,
+                reservaDeVooService.getAssentosDisponiveis(2)
+        );
+    }
 
     /*
         TODO:
-            3- get assentos disponíveis
             4- get assentos disponíveis (nenhum disponível)
             5- get Voos disponíveis
             6- get voos disponíveis (com vôos passados E/OU vôos esgotados presentes)
