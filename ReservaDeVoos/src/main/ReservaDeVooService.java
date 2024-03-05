@@ -154,4 +154,21 @@ public class ReservaDeVooService {
         }
         return exibeVoos(matches);
     }
+
+    public String pesquisaPorQtdPassageiros(int qtd) {
+        List<Voo> matches = new ArrayList<>();
+        for (Voo voo : getVoosDisponiveis()) {
+            int contador = 0;
+            for (Reserva reserva : voo.getAssentos()) {
+                if (reserva != null) {
+                    contador++;
+                }
+            }
+            if (contador == qtd) {
+                matches.add(voo);
+            }
+
+        }
+        return exibeVoos(matches);
+    }
 }
