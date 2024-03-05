@@ -419,7 +419,7 @@ public class ControllerTest {
     }
 
     @Test
-    void testPesquisaPorNumPassageiros() {
+    void testPesquisaPorNumPassageirosZerado() {
         incluiVoos();
         reservaDeVooService.reservaVoo(3, "Vinícius", 8, "839");
 
@@ -449,6 +449,13 @@ public class ControllerTest {
         incluiVoos();
 
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(-1));
+    }
+
+    @Test
+    void testPesquisaPorNumPassageirosPositivo() {
+        incluiVoos();
+
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(6));
     }
     /*
         TODO:
