@@ -267,19 +267,28 @@ public class ControllerTest {
 
     @Test
     void testGetVoosDisponiveisPassados() {
-        Date dataHoraAtual = new Date();
-        String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
-        String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
                         "X",
                         "Y",
-                        new Date(),
+                        setTime(21, 12, 2023, 15),
                         new BigDecimal(20),
-                        0
+                        20
                 )
         );
+        Assertions.assertEquals(
+                "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                        "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
+                        "Origem: Aeroporto X de Brasília\n" +
+                        "Destino: Aeroporto Y de Salvador\n" +
+                        "Preço: R$1200\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
+                        "Capacidade: 200 passageiros\n" +
+                        "(200 assentos disponíveis)\n",
+                reservaDeVooService.exibeVoosDisponiveis()
+        );
+
     }
 
     /*
