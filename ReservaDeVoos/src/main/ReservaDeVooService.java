@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -104,6 +105,7 @@ public class ReservaDeVooService {
     }
 
     private boolean isDisponivel(Voo voo) {
-        return getAssentosDisponiveis(voo) > 0;
+        return getAssentosDisponiveis(voo) > 0 &&
+                voo.getDataHora().after(new Date());
     }
 }
