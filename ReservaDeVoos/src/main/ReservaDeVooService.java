@@ -193,7 +193,7 @@ public class ReservaDeVooService {
         Voo voo = buscaVoo(idVoo);
 
         for (int i = 0; i < voo.getAssentos().length; i++) {
-            if (voo.getAssentos()[i].getCodigo() == codigoReserva) {
+            if (voo.getAssentos()[i] != null && voo.getAssentos()[i].getCodigo() == codigoReserva) {
                 voo.getAssentos()[i] = null;
             }
         }
