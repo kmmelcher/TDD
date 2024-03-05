@@ -82,6 +82,33 @@ public class ControllerTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    @Test
+    public void testReservarVooQuaseLotado() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "Aeroporto X de João Pessoa",
+                        "Aeroporto Y de Porto Alegre",
+                        "3/09/2026 12h",
+                        new BigDecimal(1600),
+                        3
+                )
+        );
+        reservaDeVooService.reservaVoo(
+                2,
+                "Anabelle Sousa",
+                2,
+                "83557746889"
+        );
+
+        reservaDeVooService.reservaVoo(
+                2,
+                "Vinícius Azevedo",
+                1,
+                "83999586897"
+        );
+    }
+
 
     @Test
     public void testExibeInfosVoo() {
