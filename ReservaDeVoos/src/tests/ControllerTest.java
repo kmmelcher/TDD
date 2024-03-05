@@ -490,9 +490,15 @@ public class ControllerTest {
 
         reservaDeVooService.reservaVoo(1, "Maria", 150, "77665544");
     }
-    /*
-        TODO:
-            19- Cancelar Voo (por identificação pessoal)
-            21- Cancelar Voo (Identificação pessoal inexistente)
-     */
+
+    @Test
+    void testCancelarVooIdentificacaoPessoalInexistente() {
+        incluiVoos();
+
+        reservaDeVooService.reservaVoo(1, "Vinícius", 14, "8");
+        reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
+        reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
+
+        reservaDeVooService.cancelarVoo(1, "Carlos");
+    }
 }
