@@ -174,7 +174,7 @@ public class ControllerTest {
         try {
             reservaDeVooService.exibeVoo(5);
             Assertions.fail("Vôo inexistente exibido");
-        } catch (IllegalArgumentException ignored) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     /*
