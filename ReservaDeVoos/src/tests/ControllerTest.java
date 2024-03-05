@@ -443,6 +443,13 @@ public class ControllerTest {
                 reservaDeVooService.pesquisaPorQtdPassageiros(0)
         );
     }
+
+    @Test
+    void testPesquisaPorNumPassageirosNegativo() {
+        incluiVoos();
+
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(-1));
+    }
     /*
         TODO:
             16- Pesquisa por número de passageiros (valor negativo)
