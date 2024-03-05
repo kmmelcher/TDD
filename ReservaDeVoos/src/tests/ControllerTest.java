@@ -15,7 +15,7 @@ public class ControllerTest {
 
 
     @BeforeEach
-    public void setFlightsUp() {
+    void setFlightsUp() {
         reservaDeVooService = new ReservaDeVooService();
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -30,7 +30,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testAdicionaVooDuplicado() {
+    void testAdicionaVooDuplicado() {
         try {
             reservaDeVooService.adicionaVoo(
                     new Voo(
@@ -47,7 +47,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarAssento() {
+    void testReservarAssento() {
         reservaDeVooService.reservaVoo(
                 1,
                 "Vinícius Azevedo",
@@ -57,7 +57,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarVooInexisteste() {
+    void testReservarVooInexisteste() {
         try {
             reservaDeVooService.reservaVoo(
                     2,
@@ -72,7 +72,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarVooLotado() {
+    void testReservarVooLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
@@ -101,7 +101,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarVooQuaseLotado() {
+    void testReservarVooQuaseLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
@@ -129,7 +129,7 @@ public class ControllerTest {
 
 
     @Test
-    public void testExibeInfosVoo() {
+    void testExibeInfosVoo() {
         Assertions.assertEquals(
                 "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
                         "Origem: Aeroporto X de Brasília\n" +
@@ -141,7 +141,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testExibeInfosVooLotado() {
+    void testExibeInfosVooLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
@@ -177,9 +177,17 @@ public class ControllerTest {
         } catch (NoSuchElementException ignored) {}
     }
 
+    @Test
+    void testGetAssentosDisponiveis() {
+        Assertions.assertEquals(
+                200,
+                reservaDeVooService.getAssentosDisponiveis(1)
+        );
+    }
+
+
     /*
         TODO:
-            2- exibição de vôo inexistente
             3- get assentos disponíveis
             4- get assentos disponíveis (nenhum disponível)
             5- get Voos disponíveis
