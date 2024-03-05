@@ -1,13 +1,14 @@
 package main;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Voo {
 
     private int id;
     private String origem;
     private String destino;
-    private String dataHora;
+    private Date dataHora;
     private BigDecimal preco;
     private Reserva[] assentos;
 
@@ -31,11 +32,11 @@ public class Voo {
         this.destino = destino;
     }
 
-    public String getDataHora() {
+    public Date getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(String dataHora) {
+    public void setDataHora(Date dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -51,7 +52,7 @@ public class Voo {
         return assentos;
     }
 
-    public Voo(int id, String origem, String destino, String dataHora, BigDecimal preco, int capacidade) {
+    public Voo(int id, String origem, String destino, Date dataHora, BigDecimal preco, int capacidade) {
         this.id = id;
         this.origem = origem;
         this.destino = destino;

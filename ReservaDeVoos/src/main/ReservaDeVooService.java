@@ -73,6 +73,7 @@ public class ReservaDeVooService {
                 "Origem: " + voo.getOrigem() + "\n" +
                 "Destino: " + voo.getDestino() + "\n" +
                 "Preço: R$" + voo.getPreco().toString() + "\n" +
+                "Dia e hora: " + voo.getDataHora().toString() + "\n" +
                 "Capacidade: " + voo.getAssentos().length + " passageiros\n" +
                 "(" + getAssentosDisponiveis(voo) + " assentos disponíveis)\n";
     }
