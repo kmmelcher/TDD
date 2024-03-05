@@ -93,19 +93,42 @@ public class ReservaDeVooService {
         return getAssentosDisponiveis(buscaVoo(id));
     }
 
-    public String exibeVoosDisponiveis() {
-        StringBuilder retorno = new StringBuilder();
+    private List<Voo> getVoosDisponiveis() {
+        List<Voo> voosDisponiveis = new ArrayList<>();
         for (Voo voo : voos) {
             if (isDisponivel(voo)) {
-                retorno.append("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-                retorno.append(exibeVoo(voo.getId()));
+                voosDisponiveis.add(voo);
             }
         }
+        return voosDisponiveis;
+    }
+
+    private String exibeVoos(List<Voo> voosExibidos) {
+        StringBuilder retorno = new StringBuilder();
+        for (Voo voo : voosExibidos) {
+            retorno.append("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+            retorno.append(exibeVoo(voo.getId()));
+        }
         return retorno.toString();
+    }
+
+    public String exibeVoosDisponiveis() {
+        return exibeVoos(getVoosDisponiveis());
     }
 
     private boolean isDisponivel(Voo voo) {
         return getAssentosDisponiveis(voo) > 0 &&
                 voo.getDataHora().after(new Date());
+    }
+
+    public String pesquisaPorOrigem(String origem) {
+        List<Voo> voosDisponiveis = getVoosDisponiveis();
+        List<Voo> matches = new ArrayList<>();
+        for (Voo voo : voosDisponiveis) {
+            if (voo.getOrigem().contains(origem)) {
+                matches.add(voo);
+            }
+        }
+        return exibeVoos(matches);
     }
 }
