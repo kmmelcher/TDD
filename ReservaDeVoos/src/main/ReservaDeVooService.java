@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ReservaDeVooService {
 
@@ -15,14 +16,9 @@ public class ReservaDeVooService {
         return voos.add(voo);
     }
 
-    public boolean reservaVoo(int id, int assento) {
-        for (Voo vooCadastrado : voos) {
-            if (vooCadastrado.getId() == id && !vooCadastrado.getAssentos()[assento-1]) {
-                vooCadastrado.getAssentos()[assento-1] = true;
-                return true;
-            }
-        }
-        return false;
+    public boolean reservaVoo(int id, String nome, int numeroDePassageiros, String contato) {
+        Voo voo = buscaVoo(id);
+
     }
 
     private Voo buscaVoo(int id) {
@@ -31,7 +27,7 @@ public class ReservaDeVooService {
                 return vooCadastrado;
             }
         }
-        return null;
+        throw new NoSuchElementException("Não há um Vôo de id " + id);
     }
     public String exibeVoo(int id) {
         Voo voo = buscaVoo(id);

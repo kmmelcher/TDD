@@ -51,7 +51,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testReservarVooAssentoOcupado() {
+    public void testReservarVooLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
                         2,
@@ -59,12 +59,23 @@ public class ControllerTest {
                         "Aeroporto Y de Porto Alegre",
                         "3/09/2026 12h",
                         new BigDecimal(1600),
-                        1
+                        3
                 )
         );
-        reservaDeVooService.reservaVoo(2, 1);
-        Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 1));
+        reservaDeVooService.reservaVoo(
+                2,
+                "Anabelle Sousa",
+                3,
+                "83557746889"
+        );
+        Assertions.assertFalse(reservaDeVooService.reservaVoo(
+                2,
+                "Vinícius Azevedo",
+                1,
+                "83998786544"
+        ));
     }
+    
 
     @Test
     public void testExibeInfosVoo() {
