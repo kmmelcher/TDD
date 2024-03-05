@@ -1,9 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ReservaDeVooService {
 
@@ -122,9 +119,8 @@ public class ReservaDeVooService {
     }
 
     public String pesquisaPorOrigem(String origem) {
-        List<Voo> voosDisponiveis = getVoosDisponiveis();
         List<Voo> matches = new ArrayList<>();
-        for (Voo voo : voosDisponiveis) {
+        for (Voo voo : getVoosDisponiveis()) {
             if (voo.getOrigem().contains(origem)) {
                 matches.add(voo);
             }
@@ -133,10 +129,26 @@ public class ReservaDeVooService {
     }
 
     public String pesquisaPorDestino(String destino) {
-        List<Voo> voosDisponiveis = getVoosDisponiveis();
         List<Voo> matches = new ArrayList<>();
-        for (Voo voo : voosDisponiveis) {
+        for (Voo voo : getVoosDisponiveis()) {
             if (voo.getDestino().contains(destino)) {
+                matches.add(voo);
+            }
+        }
+        return exibeVoos(matches);
+    }
+
+    public String pesquisaPorData(int dia, int mes, int ano) {
+        List<Voo> matches = new ArrayList<>();
+        for (Voo voo : getVoosDisponiveis()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(voo.getDataHora());
+
+            if (
+                    calendar.get(Calendar.DAY_OF_MONTH) == dia &&
+                            calendar.get(Calendar.MONTH) == mes-1 &&
+                            calendar.get(Calendar.YEAR) == ano
+            ) {
                 matches.add(voo);
             }
         }
