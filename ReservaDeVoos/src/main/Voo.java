@@ -9,7 +9,7 @@ public class Voo {
     private String destino;
     private String dataHora;
     private BigDecimal preco;
-    private boolean[] assentos;
+    private Reserva[] assentos;
 
     public int getId() {
         return id;
@@ -47,7 +47,7 @@ public class Voo {
         this.preco = preco;
     }
 
-    public boolean[] getAssentos() {
+    public Reserva[] getAssentos() {
         return assentos;
     }
 
@@ -57,6 +57,6 @@ public class Voo {
         this.destino = destino;
         this.dataHora = dataHora;
         this.preco = preco;
-        this.assentos = new boolean[capacidade];
+        this.assentos = new Reserva[capacidade];
     }
 }

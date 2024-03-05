@@ -6,6 +6,8 @@ public class Reserva {
     private int numeroDePessoas;
     private String contato;
 
+    private int assentoInicial;
+
     public String getNome() {
         return nome;
     }
@@ -30,9 +32,18 @@ public class Reserva {
         this.contato = contato;
     }
 
-    public Reserva(String nome, int numeroDePessoas, String contato) {
+    public int getAssentoInicial() {
+        return assentoInicial;
+    }
+
+    public void setAssentoInicial(int assentoInicial) {
+        this.assentoInicial = assentoInicial;
+    }
+
+    public Reserva(String nome, int numeroDePessoas, String contato, int assentoInicial) {
         this.nome = nome;
         this.numeroDePessoas = numeroDePessoas;
         this.contato = contato;
+        this.assentoInicial = assentoInicial;
     }
 }
