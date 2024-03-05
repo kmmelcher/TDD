@@ -117,7 +117,8 @@ public class ControllerTest {
                         "Origem: Aeroporto X de Brasília\n" +
                         "Destino: Aeroporto Y de Salvador\n" +
                         "Preço R$1200\n" +
-                        "Capacidade: 200 passageiros", // FIXME incluir assentos disponíveis (x disponíveis)
+                        "Capacidade: 200 passageiros" +
+                        "(200 assentos disponíveis)",
                 reservaDeVooService.exibeVoo(1));
     }
 
