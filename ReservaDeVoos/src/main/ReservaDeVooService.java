@@ -198,4 +198,14 @@ public class ReservaDeVooService {
             }
         }
     }
+
+    public void cancelarVoo(int idVoo, String identificacaoPessoal) {
+        Voo voo = buscaVoo(idVoo);
+
+        for (int i = 0; i < voo.getAssentos().length; i++) {
+            if (voo.getAssentos()[i] != null && voo.getAssentos()[i].getNome() == identificacaoPessoal) {
+                voo.getAssentos()[i] = null;
+            }
+        }
+    }
 }
