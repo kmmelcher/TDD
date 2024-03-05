@@ -32,14 +32,22 @@ public class ControllerTest {
 
     @Test
     public void testReservarAssento() {
-        Assertions.assertTrue(reservaDeVooService.reservaVoo(1, 12));
-        // FIXME Os usuários devem ser capazes de selecionar um voo e reservá-lo,
-        //  inserindo detalhes como nome, número de passageiros e informações de contato.
+        Assertions.assertTrue(reservaDeVooService.reservaVoo(
+                1,
+                "Vinícius Azevedo",
+                3,
+                "83997448122"
+        ));
     }
 
     @Test
     public void testReservarVooInexisteste() {
-        Assertions.assertFalse(reservaDeVooService.reservaVoo(2, 9));
+        Assertions.assertFalse(reservaDeVooService.reservaVoo(
+                2,
+                "Gustavo Alberto",
+                6,
+                "83994445112"
+        ));
     }
 
     @Test
