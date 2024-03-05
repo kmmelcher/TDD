@@ -344,10 +344,13 @@ public class ControllerTest {
                 reservaDeVooService.pesquisaPorOrigem("Brasília")
                 );
     }
+
+    @Test
+    void testPesquisaPorOrigemInexistente() {
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorOrigem("João Pessoa"));
+    }
     /*
         TODO:
-            8- Pesquisa por origem (nenhum disponível)
-            9- Pesquisa por origem (com destinos sendo a origem)
             10- Pesquisa por destino
             11- Pesquisa por destino (nenhum disponível)
             12- Pesquisa por destino (com origens sendo o destino)
