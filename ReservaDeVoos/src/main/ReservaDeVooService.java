@@ -86,4 +86,8 @@ public class ReservaDeVooService {
         }
         return assentosDisponiveis;
     }
+
+    public int getAssentosDisponiveis(int id) {
+        return getAssentosDisponiveis(buscaVoo(id));
+    }
 }
