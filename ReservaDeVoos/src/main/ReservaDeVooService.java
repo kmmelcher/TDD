@@ -12,8 +12,24 @@ public class ReservaDeVooService {
         this.voos = new ArrayList<>();
     }
 
-    public boolean adicionaVoo(Voo voo) {
-        return voos.add(voo);
+    public void adicionaVoo(Voo voo) {
+        if (isVooPresente(voo.getId())) {
+            throw new IllegalArgumentException("Um vôo com este id já existe no sistema");
+        }
+
+        voos.add(voo);
+    }
+
+    private boolean isVooPresente(int id) {
+        boolean isPresente = false;
+
+        for (Voo vooCadastrado : voos) {
+            if (vooCadastrado.getId() == id) {
+                isPresente = true;
+                break;
+            }
+        }
+        return isPresente;
     }
 
     public void reservaVoo(int id, String nome, int numeroDePassageiros, String contato) {
