@@ -291,10 +291,61 @@ public class ControllerTest {
 
     }
 
+    @Test
+    void testPesquisaPorOrigem() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "Aeroporto A de Belo Horizonte",
+                        "Aeroporto B de Cuiabá",
+                        setTime(21, 12, 2024, 15),
+                        new BigDecimal(20),
+                        20
+                )
+        );
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        3,
+                        "Aeroporto A de Brasília",
+                        "Aeroporto B de Cuiabá",
+                        setTime(21, 6, 2024, 15),
+                        new BigDecimal(20),
+                        20
+                )
+        );
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        4,
+                        "Aeroporto R de Brasília",
+                        "Aeroporto Y de Cuiabá",
+                        setTime(21, 6, 2020, 15),
+                        new BigDecimal(20),
+                        20
+                )
+        );
+
+        Assertions.assertEquals(
+                "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
+                "Origem: Aeroporto X de Brasília\n" +
+                "Destino: Aeroporto Y de Salvador\n" +
+                "Preço: R$1200\n" +
+                "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
+                "Capacidade: 200 passageiros\n" +
+                "(200 assentos disponíveis)\n" +
+                "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
+                "== EXIBIÇÃO DE VÔO DE ID 3 ==\n" +
+                "Origem: Aeroporto A de Brasília\n" +
+                "Destino: Aeroporto B de Cuiabá\n" +
+                "Preço: R$20\n" +
+                "Dia e hora: Fri Jun 21 15:00:00 BRT 2024\n" +
+                "Capacidade: 20 passageiros\n" +
+                "(20 assentos disponíveis)\n",
+                reservaDeVooService.pesquisaPorOrigem("Brasília")
+                );
+    }
     /*
         TODO:
-            6- get voos disponíveis (com vôos passados E/OU vôos esgotados presentes)
-            7- Pesquisa por origem
             8- Pesquisa por origem (nenhum disponível)
             9- Pesquisa por origem (com destinos sendo a origem)
             10- Pesquisa por destino
