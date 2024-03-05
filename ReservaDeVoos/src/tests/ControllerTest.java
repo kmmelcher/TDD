@@ -6,13 +6,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.NoSuchElementException;
-import static org.junit.Assert.fail;
 
 public class ControllerTest {
 
     private ReservaDeVooService reservaDeVooService;
 
+    private Date setTime(int day, int month, int year, int hour) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTime();
+    }
 
     @BeforeEach
     void setFlightsUp() {
@@ -22,7 +39,7 @@ public class ControllerTest {
                         1,
                         "Aeroporto X de Brasília",
                         "Aeroporto Y de Salvador",
-                        "21/12/2024 | 15h",
+                        setTime(21, 12, 2024, 15),
                         new BigDecimal(1200),
                         200
                 )
@@ -37,7 +54,7 @@ public class ControllerTest {
                             1,
                             "Teste",
                             "Teste",
-                            "12/12/24 14h",
+                            setTime(12, 12, 2024, 15),
                             new BigDecimal(25),
                             200
                     )
@@ -78,7 +95,7 @@ public class ControllerTest {
                         2,
                         "Aeroporto X de João Pessoa",
                         "Aeroporto Y de Porto Alegre",
-                        "3/09/2026 12h",
+                        setTime(3, 9, 2026, 14),
                         new BigDecimal(1600),
                         3
                 )
@@ -107,7 +124,7 @@ public class ControllerTest {
                         2,
                         "Aeroporto X de João Pessoa",
                         "Aeroporto Y de Porto Alegre",
-                        "3/09/2026 12h",
+                        setTime(3, 9, 2026, 12),
                         new BigDecimal(1600),
                         3
                 )
@@ -135,6 +152,7 @@ public class ControllerTest {
                         "Origem: Aeroporto X de Brasília\n" +
                         "Destino: Aeroporto Y de Salvador\n" +
                         "Preço: R$1200\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
                         "Capacidade: 200 passageiros\n" +
                         "(200 assentos disponíveis)\n",
                 reservaDeVooService.exibeVoo(1));
@@ -147,7 +165,7 @@ public class ControllerTest {
                         2,
                         "Origem genérica",
                         "Destino genérico",
-                        "03/03/2024 14h",
+                        setTime(3, 3, 2024, 14),
                         new BigDecimal(500),
                         2
                 )
@@ -164,6 +182,7 @@ public class ControllerTest {
                         "Origem: Origem genérica\n" +
                         "Destino: Destino genérico\n" +
                         "Preço: R$500\n" +
+                        "Dia e hora: Sun Mar 03 14:00:00 BRT 2024\n" +
                         "Capacidade: 2 passageiros\n" +
                         "(0 assentos disponíveis)\n",
                 reservaDeVooService.exibeVoo(2));
@@ -192,7 +211,7 @@ public class ControllerTest {
                         2,
                         "A",
                         "B",
-                        "C",
+                        new Date(),
                         new BigDecimal(9),
                         0
                 )
@@ -210,7 +229,7 @@ public class ControllerTest {
                         2,
                         "X",
                         "Y",
-                        "Z",
+                        setTime(21, 12, 2024, 15),
                         new BigDecimal(20),
                         0
                 )
@@ -220,7 +239,7 @@ public class ControllerTest {
                         3,
                         "A",
                         "B",
-                        "C",
+                        setTime(21, 12, 2024, 15),
                         new BigDecimal(9),
                         1
                 )
@@ -231,6 +250,7 @@ public class ControllerTest {
                         "Origem: Aeroporto X de Brasília\n" +
                         "Destino: Aeroporto Y de Salvador\n" +
                         "Preço: R$1200\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
                         "Capacidade: 200 passageiros\n" +
                         "(200 assentos disponíveis)\n" +
                         "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n" +
@@ -238,15 +258,32 @@ public class ControllerTest {
                         "Origem: A\n" +
                         "Destino: B\n" +
                         "Preço: R$9\n" +
+                        "Dia e hora: Sat Dec 21 15:00:00 BRT 2024\n" +
                         "Capacidade: 1 passageiros\n" +
                         "(1 assentos disponíveis)\n",
                 reservaDeVooService.exibeVoosDisponiveis()
         );
     }
 
+    @Test
+    void testGetVoosDisponiveisPassados() {
+        Date dataHoraAtual = new Date();
+        String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+        String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "X",
+                        "Y",
+                        new Date(),
+                        new BigDecimal(20),
+                        0
+                )
+        );
+    }
+
     /*
         TODO:
-            5- get Voos disponíveis
             6- get voos disponíveis (com vôos passados E/OU vôos esgotados presentes)
             7- Pesquisa por origem
             8- Pesquisa por origem (nenhum disponível)
