@@ -352,6 +352,7 @@ public class ControllerTest {
 
     @Test
     void testPesquisaPorOrigemInexistente() {
+        incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorOrigem("João Pessoa"));
     }
 
@@ -382,6 +383,7 @@ public class ControllerTest {
 
     @Test
     void testPesquisaPorDestinoInexistente() {
+        incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorDestino("João Pessoa"));
     }
 
@@ -408,12 +410,15 @@ public class ControllerTest {
                         "(20 assentos disponíveis)\n",
                 reservaDeVooService.pesquisaPorData(21, 12, 2024)
         );
+    }
 
+    @Test
+    void testPesquisaPorDataPassada() {
+        incluiVoos();
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorData(21, 6, 2020));
     }
     /*
         TODO:
-            13- Pesquisa por data
-            14- Pesquisa por data passada
             15- Pesquisa por número de passageiros
             16- Pesquisa por número de passageiros (valor negativo)
             17- Pesquisa por número de passageiros (valor zero)
