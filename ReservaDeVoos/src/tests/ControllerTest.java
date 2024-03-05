@@ -457,10 +457,19 @@ public class ControllerTest {
 
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(6));
     }
+
+    @Test
+    void testCancelarVooPorCodigoDeReserva() {
+        incluiVoos();
+
+        reservaDeVooService.reservaVoo(1, "Vinícius", 200, "8");
+
+        reservaDeVooService.cancelarVoo(1, 1);
+
+        reservaDeVooService.reservaVoo(1, "Maria", 150, "77665544");
+    }
     /*
         TODO:
-            16- Pesquisa por número de passageiros (valor negativo)
-            17- Pesquisa por número de passageiros (valor zero)
             18- Cancelar Voo (por código de reserva)
             19- Cancelar Voo (por identificação pessoal)
             20- Cancelar Voo (codigo inexistente)
