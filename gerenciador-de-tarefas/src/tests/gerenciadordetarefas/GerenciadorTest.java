@@ -17,9 +17,6 @@ public class GerenciadorTest {
     void setUp(){
         this.gerenciador = new Gerenciador();
         this.tarefaExemplo = new Tarefa(0, "Tarefa 1", "Essa é a tarefa 1", LocalDate.now(), Prioridade.BAIXA);
-    }
-
-    void adicionaTarefaExemplo() {
         this.gerenciador.adicionaTarefa(
                 tarefaExemplo.getTitulo(),
                 tarefaExemplo.getDescricao(),
@@ -30,12 +27,13 @@ public class GerenciadorTest {
 
     @Test
     void criaGerenciadorTeste(){
-        assertEquals(0, this.gerenciador.size());
+        Gerenciador gerenciadorVazio = new Gerenciador();
+
+        assertEquals(0, gerenciadorVazio.size());
     }
 
     @Test
     void adicionaTarefaTeste(){
-        adicionaTarefaExemplo();
 
         assertEquals(this.gerenciador.size(), 1);
         Tarefa primeiraTarefa = this.gerenciador.getTarefa(0);
@@ -48,8 +46,6 @@ public class GerenciadorTest {
 
     @Test
     void atualizaTituloTarefaTeste(){
-        adicionaTarefaExemplo();
-
         Tarefa tarefaAtualizada = tarefaExemplo;
         tarefaAtualizada.setTitulo("Tarefa 2");
         gerenciador.atualizaTarefa(tarefaAtualizada);
@@ -59,8 +55,6 @@ public class GerenciadorTest {
 
     @Test
     void atualizaDescricaoTarefaTeste(){
-        adicionaTarefaExemplo();
-
         Tarefa tarefaAtualizada = tarefaExemplo;
         tarefaAtualizada.setDescricao("Essa é a tarefa 2");
         gerenciador.atualizaTarefa(tarefaAtualizada);
@@ -70,8 +64,6 @@ public class GerenciadorTest {
 
     @Test
     void atualizaVencimentoTarefaTeste() {
-        adicionaTarefaExemplo();
-
         Tarefa tarefaAtualizada = tarefaExemplo;
         LocalDate amanha =  LocalDate.now().plusDays(1);
         tarefaAtualizada.setVencimento(amanha);
@@ -82,8 +74,6 @@ public class GerenciadorTest {
 
     @Test
     void atualizaPrioridadeTarefaTeste() {
-        adicionaTarefaExemplo();
-
         Tarefa tarefaAtualizada = tarefaExemplo;
         tarefaAtualizada.setPrioridade(Prioridade.MEDIA);
         gerenciador.atualizaTarefa(tarefaAtualizada);
@@ -93,8 +83,6 @@ public class GerenciadorTest {
 
     @Test
     void excluiTarefaTeste(){
-        adicionaTarefaExemplo();
-
         assertEquals(1, gerenciador.size());
 
         gerenciador.excluirTarefa(0);
@@ -104,7 +92,6 @@ public class GerenciadorTest {
 
     @Test
     void excluiPrimeiraTarefaTeste(){
-        adicionaTarefaExemplo();
         Tarefa segundaTarefa = this.tarefaExemplo;
         segundaTarefa.setTitulo("Tarefa 2");
         this.gerenciador.adicionaTarefa(
@@ -121,7 +108,5 @@ public class GerenciadorTest {
         assertEquals(1, gerenciador.size());
         assertNull(this.gerenciador.getTarefa(0));
     }
-
-
 
 }
