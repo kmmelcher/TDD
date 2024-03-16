@@ -60,4 +60,8 @@ public class Voo {
         this.preco = preco;
         this.assentos = new Reserva[capacidade];
     }
+
+    public boolean isDisponivel() {
+        return this.dataHora.after(new Date());
+    }
 }
