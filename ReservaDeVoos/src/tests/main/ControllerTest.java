@@ -1,4 +1,4 @@
-package tests;
+package tests.main;
 
 import main.Reserva;
 import main.ReservaDeVooService;
@@ -6,99 +6,16 @@ import main.Voo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.util.Mocks;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-public class ControllerTest {
-
-    private ReservaDeVooService reservaDeVooService;
-
-    private Date setTime(int day, int month, int year, int hour) {
-
-        Calendar calendar = Calendar.getInstance();
+public class ControllerTest extends Mocks {
 
 
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month-1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        return calendar.getTime();
-    }
-
-    private void incluiVoo100Vagas() {
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        2,
-                        "Aeroporto A de Belo Horizonte",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 12, 2024, 15),
-                        new BigDecimal(20),
-                        100
-                )
-        );
-    }
-
-    private void incluiVooAntigo() {
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        3,
-                        "Aeroporto A de Belo Horizonte",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 12, 2020, 15),
-                        new BigDecimal(20),
-                        100
-                )
-        );
-    }
-
-    private void incluiVooComReserva(int id) {
-        incluiVoo100Vagas();
-        fazReserva(id);
-    }
-
-    private void fazReserva(int id) {
-        reservaDeVooService.reservaVoo(id, "Vinícius", 1, "83");
-    }
-
-    private void incluiVoos() {
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        2,
-                        "Aeroporto A de Belo Horizonte",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 12, 2024, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        3,
-                        "Aeroporto A de Brasília",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 6, 2024, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        4,
-                        "Aeroporto R de Brasília",
-                        "Aeroporto Y de Cuiabá",
-                        setTime(21, 6, 2020, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-    }
 
     @BeforeEach
     void setFlightsUp() {
@@ -545,99 +462,4 @@ public class ControllerTest {
 
     }
 
-    @Test
-    void testValoresLimite() {
-        incluiVoo100Vagas();
-        reservaDeVooService.reservaVoo(2, "Vinícius", 1, "83"); // CT1
-        reservaDeVooService.reservaVoo(2, "Tony", 1, "80"); // CT2
-
-        reservaDeVooService.reservaVoo(2, "Stark", 46, "83");
-
-        reservaDeVooService.reservaVoo(2, "Maya", 1, "83"); // CT3
-
-        reservaDeVooService.reservaVoo(2, "Peter", 50, "83");
-
-        reservaDeVooService.reservaVoo(2, "Luke", 1, "83"); // CT4
-
-        try {
-            reservaDeVooService.reservaVoo(2, "Jarvis", 1, "83"); // CT5
-            Assertions.fail("foi feita uma reserva num vôo já lotado");
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    void testAgendamentoComQuantidadesVariadasDePessoas() {
-        incluiVoo100Vagas();
-
-        try {
-            reservaDeVooService.reservaVoo(2, "Jarvis", 0, "83"); // CT1
-            Assertions.fail("foi feita uma reserva sem pessoas");
-        } catch (IllegalArgumentException ignored) {}
-
-        reservaDeVooService.reservaVoo(2, "Jarvis", 5, "83"); // CT2
-
-        try {
-            reservaDeVooService.reservaVoo(2, "Jarvis", 200, "83"); // CT3
-            Assertions.fail("foi feita uma reserva sem uma quantidade de pessoas suportada pelo sistema.");
-        } catch (IllegalArgumentException ignored) {}
-
-    }
-
-    @Test
-    void testReservaEmDatasDistintas() {
-        incluiVooComReserva(2);
-        Assertions.assertFalse(reservaDeVooService.isAssentoDisponivel(2, 1));
-
-        reservaDeVooService.cancelarVoo(2, "Vinícius");
-        Assertions.assertTrue(reservaDeVooService.isAssentoDisponivel(2, 1)); // CT01
-
-        fazReserva(2);
-        reservaDeVooService.cancelarVoo(2, 1);
-        Assertions.assertTrue(reservaDeVooService.isAssentoDisponivel(2, 1)); // CT02
-
-        incluiVooAntigo();
-        fazReserva(3);
-        incluiReservaEmVooAntigo();
-        try {
-            reservaDeVooService.cancelarVoo(3, "Vinícius");
-            Assertions.fail("Cancelado um vôo antigo"); // CT03
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            reservaDeVooService.cancelarVoo(3, 1);
-            Assertions.fail("Cancelado um vôo antigo"); // CT04
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            reservaDeVooService.cancelarVoo(2, "Beatriz");
-            Assertions.fail("Cancelado um vôo sem reserva"); // CT05
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            reservaDeVooService.cancelarVoo(2, 6);
-            Assertions.fail("Cancelado um vôo sem reserva"); // CT06
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            reservaDeVooService.cancelarVoo(3, "Beatriz");
-            Assertions.fail("Cancelado um vôo antigo e sem reserva"); // CT07
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            reservaDeVooService.cancelarVoo(3, 6);
-            Assertions.fail("Cancelado um vôo antigo e sem reserva"); // CT08
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    private void incluiReservaEmVooAntigo() {
-        reservaDeVooService
-                .buscaVoo(3)
-                .getAssentos()[0] = new Reserva(
-                        "Vinícius",
-                        1,
-                        "839",
-                        1,
-                        1
-                );
-    }
 }
