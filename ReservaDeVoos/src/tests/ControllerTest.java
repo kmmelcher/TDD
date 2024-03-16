@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -30,6 +29,19 @@ public class ControllerTest {
         calendar.set(Calendar.MILLISECOND, 0);
 
         return calendar.getTime();
+    }
+
+    private void incluiVoo100Vagas() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        2,
+                        "Aeroporto A de Belo Horizonte",
+                        "Aeroporto B de Cuiabá",
+                        setTime(21, 12, 2024, 15),
+                        new BigDecimal(20),
+                        100
+                )
+        );
     }
 
     private void incluiVoos() {
@@ -500,5 +512,43 @@ public class ControllerTest {
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
         reservaDeVooService.cancelarVoo(1, "Carlos");
+    }
+
+    @Test
+    void testValoresLimite() {
+        incluiVoo100Vagas();
+        reservaDeVooService.reservaVoo(2, "Vinícius", 1, "83"); // CT1
+        reservaDeVooService.reservaVoo(2, "Tony", 1, "80"); // CT2
+
+        reservaDeVooService.reservaVoo(2, "Stark", 46, "83");
+
+        reservaDeVooService.reservaVoo(2, "Maya", 1, "83"); // CT3
+
+        reservaDeVooService.reservaVoo(2, "Peter", 50, "83");
+
+        reservaDeVooService.reservaVoo(2, "Luke", 1, "83"); // CT4
+
+        try {
+            reservaDeVooService.reservaVoo(2, "Jarvis", 1, "83"); // CT5
+            Assertions.fail("foi feita uma reserva num vôo já lotado");
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    void testAgendamentoComQuantidadesVariadasDePessoas() {
+        incluiVoo100Vagas();
+
+        try {
+            reservaDeVooService.reservaVoo(2, "Jarvis", 0, "83"); // CT1
+            Assertions.fail("foi feita uma reserva sem pessoas");
+        } catch (IllegalArgumentException ignored) {}
+
+        reservaDeVooService.reservaVoo(2, "Jarvis", 5, "83"); // CT2
+
+        try {
+            reservaDeVooService.reservaVoo(2, "Jarvis", 200, "83"); // CT3
+            Assertions.fail("foi feita uma reserva sem uma quantidade de pessoas suportada pelo sistema.");
+        } catch (IllegalArgumentException ignored) {}
+
     }
 }
