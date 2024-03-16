@@ -1,5 +1,6 @@
 package tests;
 
+import main.Reserva;
 import main.ReservaDeVooService;
 import main.Voo;
 import org.junit.jupiter.api.Assertions;
@@ -42,6 +43,28 @@ public class ControllerTest {
                         100
                 )
         );
+    }
+
+    private void incluiVooAntigo() {
+        reservaDeVooService.adicionaVoo(
+                new Voo(
+                        3,
+                        "Aeroporto A de Belo Horizonte",
+                        "Aeroporto B de Cuiabá",
+                        setTime(21, 12, 2020, 15),
+                        new BigDecimal(20),
+                        100
+                )
+        );
+    }
+
+    private void incluiVooComReserva(int id) {
+        incluiVoo100Vagas();
+        fazReserva(id);
+    }
+
+    private void fazReserva(int id) {
+        reservaDeVooService.reservaVoo(id, "Vinícius", 1, "83");
     }
 
     private void incluiVoos() {
@@ -489,7 +512,11 @@ public class ControllerTest {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        reservaDeVooService.cancelarVoo(1, 7);
+        try {
+            reservaDeVooService.cancelarVoo(1, 7);
+            Assertions.fail("Vôo de reserva inexistente cancelado");
+        } catch (IllegalArgumentException ignored) {}
+
     }
 
     @Test
@@ -511,7 +538,11 @@ public class ControllerTest {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        reservaDeVooService.cancelarVoo(1, "Carlos");
+        try {
+            reservaDeVooService.cancelarVoo(1, "Carlos");
+            Assertions.fail("Cancelado um vôo sem reserva");
+        } catch (IllegalArgumentException ignored) {}
+
     }
 
     @Test
@@ -550,5 +581,63 @@ public class ControllerTest {
             Assertions.fail("foi feita uma reserva sem uma quantidade de pessoas suportada pelo sistema.");
         } catch (IllegalArgumentException ignored) {}
 
+    }
+
+    @Test
+    void testReservaEmDatasDistintas() {
+        incluiVooComReserva(2);
+        Assertions.assertFalse(reservaDeVooService.isAssentoDisponivel(2, 1));
+
+        reservaDeVooService.cancelarVoo(2, "Vinícius");
+        Assertions.assertTrue(reservaDeVooService.isAssentoDisponivel(2, 1)); // CT01
+
+        fazReserva(2);
+        reservaDeVooService.cancelarVoo(2, 1);
+        Assertions.assertTrue(reservaDeVooService.isAssentoDisponivel(2, 1)); // CT02
+
+        incluiVooAntigo();
+        fazReserva(3);
+        incluiReservaEmVooAntigo();
+        try {
+            reservaDeVooService.cancelarVoo(3, "Vinícius");
+            Assertions.fail("Cancelado um vôo antigo"); // CT03
+        } catch (IllegalArgumentException ignored) {}
+
+        try {
+            reservaDeVooService.cancelarVoo(3, 1);
+            Assertions.fail("Cancelado um vôo antigo"); // CT04
+        } catch (IllegalArgumentException ignored) {}
+
+        try {
+            reservaDeVooService.cancelarVoo(2, "Beatriz");
+            Assertions.fail("Cancelado um vôo sem reserva"); // CT05
+        } catch (IllegalArgumentException ignored) {}
+
+        try {
+            reservaDeVooService.cancelarVoo(2, 6);
+            Assertions.fail("Cancelado um vôo sem reserva"); // CT06
+        } catch (IllegalArgumentException ignored) {}
+
+        try {
+            reservaDeVooService.cancelarVoo(3, "Beatriz");
+            Assertions.fail("Cancelado um vôo antigo e sem reserva"); // CT07
+        } catch (IllegalArgumentException ignored) {}
+
+        try {
+            reservaDeVooService.cancelarVoo(3, 6);
+            Assertions.fail("Cancelado um vôo antigo e sem reserva"); // CT08
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private void incluiReservaEmVooAntigo() {
+        reservaDeVooService
+                .buscaVoo(3)
+                .getAssentos()[0] = new Reserva(
+                        "Vinícius",
+                        1,
+                        "839",
+                        1,
+                        1
+                );
     }
 }
