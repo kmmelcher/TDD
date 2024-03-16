@@ -73,7 +73,7 @@ public class ReservaDeVooService {
         throw new IllegalArgumentException("Não há assentos suficientes para essa quantidade de passageiros neste vôo.");
     }
 
-    private Voo buscaVoo(int id) {
+    public Voo buscaVoo(int id) {
         for (Voo vooCadastrado : voos) {
             if (vooCadastrado.getId() == id) {
                 return vooCadastrado;
@@ -191,21 +191,39 @@ public class ReservaDeVooService {
 
     public void cancelarVoo(int idVoo, int codigoReserva) {
         Voo voo = buscaVoo(idVoo);
-
+        if (!voo.isDisponivel()) {
+            throw new IllegalArgumentException("Vôo antigo");
+        }
+        int contador = 0;
         for (int i = 0; i < voo.getAssentos().length; i++) {
             if (voo.getAssentos()[i] != null && voo.getAssentos()[i].getCodigo() == codigoReserva) {
                 voo.getAssentos()[i] = null;
+                contador++;
             }
         }
+        if (contador == 0) {
+            throw new IllegalArgumentException("Não possui reserva");
+        }
+    }
+
+    public boolean isAssentoDisponivel(int idVoo, int assento) {
+        return buscaVoo(idVoo).getAssentos()[assento-1] == null;
     }
 
     public void cancelarVoo(int idVoo, String identificacaoPessoal) {
         Voo voo = buscaVoo(idVoo);
-
+        if (!voo.isDisponivel()) {
+            throw new IllegalArgumentException("Vôo antigo");
+        }
+        int contador = 0;
         for (int i = 0; i < voo.getAssentos().length; i++) {
-            if (voo.getAssentos()[i] != null && voo.getAssentos()[i].getNome() == identificacaoPessoal) {
+            if (voo.getAssentos()[i] != null && Objects.equals(voo.getAssentos()[i].getNome(), identificacaoPessoal)) {
                 voo.getAssentos()[i] = null;
+                contador++;
             }
+        }
+        if (contador == 0) {
+            throw new IllegalArgumentException("Não possui reserva");
         }
     }
 }
