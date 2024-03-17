@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ReservaDeVoos/ReservaDeVoos.iml" filepath="$PROJECT_DIR$/ReservaDeVoos/ReservaDeVoos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tdd.iml" filepath="$PROJECT_DIR$/tdd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gerenciador-de-tarefas/gerenciador-de-tarefas.iml" filepath="$PROJECT_DIR$/gerenciador-de-tarefas/gerenciador-de-tarefas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tdd.iml" filepath="$PROJECT_DIR$/.idea/tdd.iml" />
     </modules>
   </component>
 </project>
