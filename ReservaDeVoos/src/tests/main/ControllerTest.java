@@ -1,69 +1,21 @@
-package tests;
+package tests.main;
 
+import main.Reserva;
 import main.ReservaDeVooService;
 import main.Voo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.util.Mocks;
+
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-public class ControllerTest {
-
-    private ReservaDeVooService reservaDeVooService;
-
-    private Date setTime(int day, int month, int year, int hour) {
-
-        Calendar calendar = Calendar.getInstance();
+public class ControllerTest extends Mocks {
 
 
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month-1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        return calendar.getTime();
-    }
-
-    private void incluiVoos() {
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        2,
-                        "Aeroporto A de Belo Horizonte",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 12, 2024, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        3,
-                        "Aeroporto A de Brasília",
-                        "Aeroporto B de Cuiabá",
-                        setTime(21, 6, 2024, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-        reservaDeVooService.adicionaVoo(
-                new Voo(
-                        4,
-                        "Aeroporto R de Brasília",
-                        "Aeroporto Y de Cuiabá",
-                        setTime(21, 6, 2020, 15),
-                        new BigDecimal(20),
-                        20
-                )
-        );
-    }
 
     @BeforeEach
     void setFlightsUp() {
@@ -477,7 +429,11 @@ public class ControllerTest {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        reservaDeVooService.cancelarVoo(1, 7);
+        try {
+            reservaDeVooService.cancelarVoo(1, 7);
+            Assertions.fail("Vôo de reserva inexistente cancelado");
+        } catch (IllegalArgumentException ignored) {}
+
     }
 
     @Test
@@ -499,6 +455,11 @@ public class ControllerTest {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        reservaDeVooService.cancelarVoo(1, "Carlos");
+        try {
+            reservaDeVooService.cancelarVoo(1, "Carlos");
+            Assertions.fail("Cancelado um vôo sem reserva");
+        } catch (IllegalArgumentException ignored) {}
+
     }
+
 }
