@@ -1,23 +1,23 @@
-package tests.main;
+package tests.junit5tests;
 
-import main.Reserva;
 import main.ReservaDeVooService;
 import main.Voo;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.provider.ValueSource;
 import tests.util.Mocks;
-
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-public class ControllerTest extends Mocks {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@DisplayName("Classe de teste do ReservaDeVooService")
+public class Junit5Tests extends Mocks {
 
 
 
     @BeforeEach
+    @DisplayName("Configura vôos para testes")
     void setFlightsUp() {
         reservaDeVooService = new ReservaDeVooService();
         reservaDeVooService.adicionaVoo(
@@ -33,23 +33,24 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("Adiciona Vôo dupluicado")
     void testAdicionaVooDuplicado() {
-        try {
-            reservaDeVooService.adicionaVoo(
-                    new Voo(
-                            1,
-                            "Teste",
-                            "Teste",
-                            setTime(12, 12, 2024, 15),
-                            new BigDecimal(25),
-                            200
-                    )
-            );
-            Assertions.fail("Vôo duplicado inserido");
-        } catch (IllegalArgumentException ignored) {}
+        assertThrows(IllegalArgumentException.class, () ->
+                reservaDeVooService.adicionaVoo(
+                        new Voo(
+                                1,
+                                "Teste",
+                                "Teste",
+                                setTime(12, 12, 2024, 15),
+                                new BigDecimal(25),
+                                200
+                        )
+                )
+        );
     }
 
     @Test
+    @DisplayName("Teste de reserva de assento")
     void testReservarAssento() {
         reservaDeVooService.reservaVoo(
                 1,
@@ -60,21 +61,20 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("Reserva de vôo inexistente")
     void testReservarVooInexisteste() {
-        try {
-            reservaDeVooService.reservaVoo(
-                    2,
-                    "Gustavo Alberto",
-                    6,
-                    "83994445112"
-            );
-            Assertions.fail("Era esperado um NoSuchElementException");
-        } catch (NoSuchElementException ignored) {
-
-        }
+        assertThrows(NoSuchElementException.class, () ->
+                reservaDeVooService.reservaVoo(
+                        2,
+                        "Gustavo Alberto",
+                        6,
+                        "83994445112"
+                )
+        );
     }
 
     @Test
+    @DisplayName("Reserva de voo lotado")
     void testReservarVooLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -92,18 +92,18 @@ public class ControllerTest extends Mocks {
                 3,
                 "83557746889"
         );
-        try {
-            reservaDeVooService.reservaVoo(
-                    2,
-                    "Vinícius Azevedo",
-                    1,
-                    "83998786544"
-            );
-            Assertions.fail("Reserva concluída em vôo lotado");
-        } catch (IllegalArgumentException ignored) {}
+        assertThrows(IllegalArgumentException.class, () ->
+                reservaDeVooService.reservaVoo(
+                        2,
+                        "Vinícius Azevedo",
+                        1,
+                        "83998786544"
+                )
+        );
     }
 
     @Test
+    @DisplayName("Reserva de voo quase lotado")
     void testReservarVooQuaseLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -132,6 +132,7 @@ public class ControllerTest extends Mocks {
 
 
     @Test
+    @DisplayName("teste de exibição de informações de um voo")
     void testExibeInfosVoo() {
         Assertions.assertEquals(
                 "== EXIBIÇÃO DE VÔO DE ID 1 ==\n" +
@@ -145,6 +146,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("exibição de voo lotado")
     void testExibeInfosVooLotado() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -174,15 +176,16 @@ public class ControllerTest extends Mocks {
                 reservaDeVooService.exibeVoo(2));
     }
 
-    @Test
-    void testExibeVooInexistente() {
-        try {
-            reservaDeVooService.exibeVoo(5);
-            Assertions.fail("Vôo inexistente exibido");
-        } catch (NoSuchElementException ignored) {}
+    @DisplayName("exibição de voo inexistente")
+    @ValueSource(ints = {0, 2, 3, 5})
+    void testExibeVooInexistente(int ints) {
+        assertThrows(NoSuchElementException.class, () ->
+                reservaDeVooService.exibeVoo(ints)
+        );
     }
 
     @Test
+    @DisplayName("teste de obtenção de assentos disponíveis")
     void testGetAssentosDisponiveis() {
         Assertions.assertEquals(
                 200,
@@ -191,6 +194,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("obtenção de assentos (nenhum disponível)")
     void testGetAssentosDisponiveisNenhumDisponivel() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -209,6 +213,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("obtem voos disponiveis")
     void getVoosDisponiveis() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -252,6 +257,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("obter voos passados disponiveis (invalido)")
     void testGetVoosDisponiveisPassados() {
         reservaDeVooService.adicionaVoo(
                 new Voo(
@@ -278,6 +284,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("teste de pesquisa por origem")
     void testPesquisaPorOrigem() {
         incluiVoos();
 
@@ -303,12 +310,14 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("teste de pesquisa por origem (voo inexistente)")
     void testPesquisaPorOrigemInexistente() {
         incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorOrigem("João Pessoa"));
     }
 
     @Test
+    @DisplayName("teste de pesquisa por destino")
     void testPesquisaPorDestino() {
         incluiVoos();
 
@@ -334,12 +343,14 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("teste de pesquisa por destino (resultado inexistente)")
     void testPesquisaPorDestinoInexistente() {
         incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorDestino("João Pessoa"));
     }
 
     @Test
+    @DisplayName("Teste de pesquisa por data")
     void testPesquisaPorData() {
         incluiVoos();
 
@@ -365,12 +376,14 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("pesquisa por data passada")
     void testPesquisaPorDataPassada() {
         incluiVoos();
         Assertions.assertEquals("", reservaDeVooService.pesquisaPorData(21, 6, 2020));
     }
 
     @Test
+    @DisplayName("pesquisa por numero de passageiros")
     void testPesquisaPorNumPassageirosZerado() {
         incluiVoos();
         reservaDeVooService.reservaVoo(3, "Vinícius", 8, "839");
@@ -396,14 +409,16 @@ public class ControllerTest extends Mocks {
         );
     }
 
-    @Test
-    void testPesquisaPorNumPassageirosNegativo() {
+    @DisplayName("pesquisa por numero de passageiros negativo")
+    @ValueSource(ints = {-1, -3, -7, -10})
+    void testPesquisaPorNumPassageirosNegativo(int ints) {
         incluiVoos();
 
-        Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(-1));
+        Assertions.assertEquals("", reservaDeVooService.pesquisaPorQtdPassageiros(ints));
     }
 
     @Test
+    @DisplayName("pesquisa por numero de passageiros positivo")
     void testPesquisaPorNumPassageirosPositivo() {
         incluiVoos();
 
@@ -411,6 +426,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("cancelar voo por codigo de reserva")
     void testCancelarVooPorCodigoDeReserva() {
         incluiVoos();
 
@@ -422,6 +438,17 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("cancelar voo por codigo de reserva (inválido)")
+    void testCancelarVooInvalidoPorCodigoDeReserva() {
+        incluiVooAntigo();
+
+        assertThrows(IllegalArgumentException.class, () ->
+            this.reservaDeVooService.cancelarVoo(3, 1)
+        );
+    }
+
+    @Test
+    @DisplayName("cancelar voo com código inexistente")
     void testCancelarVooCodigoInexistente() {
         incluiVoos();
 
@@ -429,14 +456,13 @@ public class ControllerTest extends Mocks {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        try {
-            reservaDeVooService.cancelarVoo(1, 7);
-            Assertions.fail("Vôo de reserva inexistente cancelado");
-        } catch (IllegalArgumentException ignored) {}
-
+        assertThrows(IllegalArgumentException.class, () ->
+                reservaDeVooService.cancelarVoo(1, 7)
+        );
     }
 
-    @Test
+    @DisplayName("cancelar voo por identificação pessoal")
+    @RepeatedTest(10)
     void testCancelarVooPorIdentificacaoPessoal() {
         incluiVoos();
 
@@ -448,6 +474,7 @@ public class ControllerTest extends Mocks {
     }
 
     @Test
+    @DisplayName("cancelar voo por identificação pessoal (inexistente)")
     void testCancelarVooIdentificacaoPessoalInexistente() {
         incluiVoos();
 
@@ -455,11 +482,21 @@ public class ControllerTest extends Mocks {
         reservaDeVooService.reservaVoo(1, "Isabela", 20, "8");
         reservaDeVooService.reservaVoo(1, "Ulisses", 5, "8");
 
-        try {
-            reservaDeVooService.cancelarVoo(1, "Carlos");
-            Assertions.fail("Cancelado um vôo sem reserva");
-        } catch (IllegalArgumentException ignored) {}
-
+        assertThrows(IllegalArgumentException.class, () ->
+                reservaDeVooService.cancelarVoo(1, "Carlos")
+        );
     }
+
+    @Test
+    @DisplayName("cancelar voo por identificação pessoal (inválido)")
+    void testCancelarVooInvalidoPorIdentificacaoPessoal() {
+        incluiVooAntigo();
+
+        assertThrows(IllegalArgumentException.class, () ->
+                this.reservaDeVooService.cancelarVoo(3, "Vinícius")
+        );
+    }
+
+
 
 }
