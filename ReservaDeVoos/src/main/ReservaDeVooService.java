@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ReservaDeVooService {
 
-    private List<Voo> voos;
+    private final List<Voo> voos;
 
     public ReservaDeVooService() {
         this.voos = new ArrayList<>();
